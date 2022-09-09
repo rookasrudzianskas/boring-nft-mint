@@ -8,10 +8,12 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@sanity/image-url": "^1.0.1",
     "@thirdweb-dev/react": "^2.9.7",
     "@thirdweb-dev/sdk": "^2.4.9",
     "ethers": "^5.7.0",
     "next": "latest",
+    "next-sanity": "^0.8.4",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   },
