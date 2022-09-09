@@ -10,7 +10,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="https://venturebeat.com/wp-content/uploads/2022/03/GettyImages-1365200314.jpg?fit=2211%2C1171&strip=all" />
       </Head>
 
-      Hello, from here!
     </div>
   )
 }
