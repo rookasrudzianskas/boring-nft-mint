@@ -31,6 +31,11 @@ const NFTDropPage = () => {
                     </header>
 
                     <hr className="my-2 border"/>
+                    {address && (
+                        <div className="flex flex-col items-center justify-center space-y-2">
+                            <p className="text-sm text-rose-400">You're logged in with wallet {address.substring(0, 5)}...{address.substring(address.length-5)}</p>
+                        </div>
+                    )}
 
                     <div className="mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
                         <img src="https://links.papareact.com/bdy" className="w-80 object-cover pb-10 lg:h-40" alt=""/>
