@@ -52,6 +52,27 @@ const NFTDropPage = ({collections}: Props) => {
         fetchPrice();
     }, [nftDrop]);
 
+    const mintNft =  () => {
+        if(!nftDrop || !address) return;
+        const quantity = 1;
+        setLoading(true);
+        nftDrop.claimTo(address, quantity).then(async (tx) => {
+            const receipt = tx[0].receipt; // the transaction receipt
+            const claimedTokenId = tx[0].id // the id of the NFT claimed
+            const claimedNFT = await tx[0].data() // the claimed NFT data
+
+            console.log(receipt, 'This is the receipt');
+            console.log(claimedTokenId, 'This is the claimed token id');
+            console.log(claimedNFT, 'This is the claimed NFT');
+
+        }).catch((err) => {
+            console.log(err, 'This is the error');
+        }).finally(() => {
+            // console.log('This is the finally');
+            setLoading(false);
+        })
+    }
+
     return (
         <div>
             <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
@@ -95,7 +116,7 @@ const NFTDropPage = ({collections}: Props) => {
                         )}
                     </div>
 
-                    <button disabled={loading || claimedSupply === totalSupply?.toNumber() || !address} className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                    <button onClick={mintNft} disabled={loading || claimedSupply === totalSupply?.toNumber() || !address} className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150 disabled:bg-gray-400 disabled:cursor-not-allowed">
                         {loading ? (
                             <>Loading...</>
                         ) : claimedSupply === totalSupply?.toNumber() ? (
