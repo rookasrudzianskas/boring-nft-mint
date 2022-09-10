@@ -84,8 +84,16 @@ const NFTDropPage = ({collections}: Props) => {
                         )}
                     </div>
 
-                    <button className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150">
-                        Mint NFT (0.1 ETH)
+                    <button disabled={loading || claimedSupply === totalSupply?.toNumber() || !address} className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                        {loading ? (
+                            <>Loading...</>
+                        ) : claimedSupply === totalSupply?.toNumber() ? (
+                            <>SOLD OUT </>
+                        ) : !address ? (
+                            <>Sign in to Mint</>
+                        ) : (
+                            <span>Mint NFT (0.01 ETH)</span>
+                        )}
                     </button>
 
                 </div>
