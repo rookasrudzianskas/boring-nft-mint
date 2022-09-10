@@ -34,10 +34,10 @@ export default {
       },
     },
     {
-      name: 'author',
-      title: 'Author',
+      name: 'creator',
+      title: 'Creator',
       type: 'reference',
-      to: {type: 'author'},
+      to: {type: 'creator'},
     },
     {
       name: 'mainImage',
@@ -48,34 +48,12 @@ export default {
       },
     },
     {
-      name: 'categories',
-      title: 'Categories',
-      type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
-    },
-    {
-      name: 'publishedAt',
-      title: 'Published at',
-      type: 'datetime',
-    },
-    {
-      name: 'body',
-      title: 'Body',
-      type: 'blockContent',
+      name: 'previewImage',
+      title: 'Preview image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     },
   ],
-
-  preview: {
-    select: {
-      title: 'title',
-      author: 'author.name',
-      media: 'mainImage',
-    },
-    prepare(selection) {
-      const {author} = selection
-      return Object.assign({}, selection, {
-        subtitle: author && `by ${author}`,
-      })
-    },
-  },
 }
