@@ -18,19 +18,25 @@ const NFTDropPage = ({collections}: Props) => {
     const address = useAddress();
     const disconnect = useDisconnect();
     const [claimedSupply, setClaimedSupply] = useState<number>(0);
-    const [totalSupply, setTotalSupply] = useState<BigNumber>(0);
+    const [totalSupply, setTotalSupply] = useState<BigNumber>();
     const nftDrop = useNFTDrop(collections.address);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if(nftDrop) return;
+        // console.log(nftDrop);
+        if(!nftDrop) return;
+        // console.log('it goes here')
         const fetchNFTDropData = async () => {
+            setLoading(true);
             // @ts-ignore
             const claimed = await nftDrop.getAllClaimed();
+            // console.log(claimed, 'This is claimed');
             // @ts-ignore
             const total = await nftDrop.totalSupply();
 
             setClaimedSupply(claimed.length);
             setTotalSupply(total);
+            setLoading(false);
         }
         fetchNFTDropData();
     }, [nftDrop]);
@@ -68,7 +74,11 @@ const NFTDropPage = ({collections}: Props) => {
                     <div className="mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
                         <img src={urlFor(collections.mainImage).url()} className="w-80 object-cover pb-10 lg:h-40" alt=""/>
                         <h1 className="text-3xl font-bold lg:text-5xl lg:font-extrabold"><span>{collections.title}</span></h1>
-                        <p className="pt-2 text-xl text-green-500">{claimedSupply} / {totalSupply} NFT's claimed</p>
+                        {loading ? (
+                            <p className="pt-2 text-xl text-green-500 animate-pulse">Loading Supply Count...</p>
+                        ) : (
+                            <p className="pt-2 text-xl text-green-500">{claimedSupply} / {totalSupply?.toString()} NFT's claimed</p>
+                        )}
                     </div>
 
                     <button className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150">
