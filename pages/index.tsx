@@ -9,7 +9,6 @@ import Link from "next/link";
 interface Props {
     collections: Collection[]
 }
-
 // @ts-ignore
 const Home: NextPage = ({collections}: Props) => {
 
