@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Image from "next/image";
 import Head from "next/head";
-import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
+import { useAddress, useDisconnect, useMetamask, useNFTDrop } from "@thirdweb-dev/react";
 import {GetServerSideProps} from "next";
 import {sanityClient, urlFor} from "../../sanity";
 import {Collection} from "../../typings";
 import Link from "next/link";
+import {BigNumber} from "ethers";
 
 interface Props {
     collections: Collection
@@ -16,6 +17,23 @@ const NFTDropPage = ({collections}: Props) => {
     const connectWithMetamask = useMetamask();
     const address = useAddress();
     const disconnect = useDisconnect();
+    const [claimedSupply, setClaimedSupply] = useState<number>(0);
+    const [totalSupply, setTotalSupply] = useState<BigNumber>(0);
+    const nftDrop = useNFTDrop(collections.address);
+
+    useEffect(() => {
+        if(nftDrop) return;
+        const fetchNFTDropData = async () => {
+            // @ts-ignore
+            const claimed = await nftDrop.getAllClaimed();
+            // @ts-ignore
+            const total = await nftDrop.totalSupply();
+
+            setClaimedSupply(claimed.length);
+            setTotalSupply(total);
+        }
+        fetchNFTDropData();
+    }, [nftDrop]);
 
     return (
         <div>
@@ -50,7 +68,7 @@ const NFTDropPage = ({collections}: Props) => {
                     <div className="mt-10 flex flex-1 flex-col items-center space-y-6 text-center lg:justify-center lg:space-y-0">
                         <img src={urlFor(collections.mainImage).url()} className="w-80 object-cover pb-10 lg:h-40" alt=""/>
                         <h1 className="text-3xl font-bold lg:text-5xl lg:font-extrabold"><span>{collections.title}</span></h1>
-                        <p className="pt-2 text-xl text-green-500">13 / 21 NFT's claimed</p>
+                        <p className="pt-2 text-xl text-green-500">{claimedSupply} / {totalSupply} NFT's claimed</p>
                     </div>
 
                     <button className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150">
