@@ -6,7 +6,7 @@ import {GetServerSideProps} from "next";
 import {sanityClient} from "../../sanity";
 
 
-const NFTDropPage = () => {
+const NFTDropPage = ({collections}) => {
     const connectWithMetamask = useMetamask();
     const address = useAddress();
     const disconnect = useDisconnect();
@@ -84,10 +84,13 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
             },
         },
 }`;
-    const collections = await sanityClient.fetch(query);
-    return {
-        props: {
-            collections
+    const collections = await sanityClient.fetch(query, {
+        id: params?.id
+    });
+
+    if(!collections) {
+        return {
+            notFound: true
         }
     }
 }
