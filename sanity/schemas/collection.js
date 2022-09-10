@@ -1,11 +1,27 @@
 export default {
-  name: 'post',
-  title: 'Post',
+  name: 'collection',
+  title: 'Collection',
   type: 'document',
   fields: [
     {
       name: 'title',
+      description: 'Enter the title of the NFT Drop',
       title: 'Title',
+      type: 'string',
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'string',
+    },
+    {
+      name: 'nftCollectionName',
+      title: 'Name of NFT Collection',
+      type: 'string',
+    },
+    {
+      name: 'address',
+      title: 'Address',
       type: 'string',
     },
     {
