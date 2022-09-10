@@ -7,6 +7,7 @@ import {sanityClient, urlFor} from "../../sanity";
 import {Collection} from "../../typings";
 import Link from "next/link";
 import {BigNumber} from "ethers";
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Props {
     collections: Collection
@@ -56,10 +57,30 @@ const NFTDropPage = ({collections}: Props) => {
         if(!nftDrop || !address) return;
         const quantity = 1;
         setLoading(true);
+        const notification = toast.loading('Minting NFT...', {
+            style: {
+                background: 'white',
+                color: 'green',
+                fontWeight: 'bolder',
+                fontSize: '17px',
+                padding: '20px',
+            }
+        });
         nftDrop.claimTo(address, quantity).then(async (tx) => {
             const receipt = tx[0].receipt; // the transaction receipt
             const claimedTokenId = tx[0].id // the id of the NFT claimed
             const claimedNFT = await tx[0].data() // the claimed NFT data
+
+            toast('NFT Minted!', {
+                duration: 8000,
+                style: {
+                    background: 'green',
+                    color: 'white',
+                    fontWeight: 'bolder',
+                    fontSize: '17px',
+                    padding: '20px',
+                }
+            });
 
             console.log(receipt, 'This is the receipt');
             console.log(claimedTokenId, 'This is the claimed token id');
@@ -67,14 +88,25 @@ const NFTDropPage = ({collections}: Props) => {
 
         }).catch((err) => {
             console.log(err, 'This is the error');
+            toast('Whoops... Error Minting NFT', {
+                style: {
+                    background: 'red',
+                    color: 'white',
+                    fontWeight: 'bolder',
+                    fontSize: '17px',
+                    padding: '20px',
+                }
+            });
         }).finally(() => {
             // console.log('This is the finally');
             setLoading(false);
+            toast.dismiss(notification);
         })
     }
 
     return (
         <div>
+            <Toaster position={'bottom-center'} />
             <div className="flex h-screen flex-col lg:grid lg:grid-cols-10">
                 <div className="bg-gradient-to-br from-cyan-800 to-rose-500 lg:col-span-4">
                     <div className="flex flex-col items-center justify-center py-2 lg:min-h-screen">
