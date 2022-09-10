@@ -79,6 +79,9 @@ const NFTDropPage = ({collections}: Props) => {
                         ) : (
                             <p className="pt-2 text-xl text-green-500">{claimedSupply} / {totalSupply?.toString()} NFT's claimed</p>
                         )}
+                        {loading && (
+                            <img className="h-36 w-36 object-contain" src={'https://cdn.hackernoon.com/images/0*4Gzjgh9Y7Gu8KEtZ.gif'} alt=""/>
+                        )}
                     </div>
 
                     <button className="h-16 w-full bg-red-600 text-white rounded-full mt-10 font-bold hover:bg-opacity-80 duration-150">
